@@ -1,0 +1,142 @@
+
+Depois de implementarem o Singleton, 
+
+Desafio: altere o idioma através de c1 e verifique o valor através de c2.
+
+Para isso, acrescente:
+
+public String getIdioma() {
+    return idioma;
+}
+
+public void setIdioma(String idioma) {
+    this.idioma = idioma;
+}
+
+E faça:
+
+Configuracao c1 = Configuracao.getInstance();
+Configuracao c2 = Configuracao.getInstance();
+
+c1.setIdioma("Inglês");
+
+System.out.println(c2.getIdioma());
+
+Resultado:
+
+Inglês
+Pergunta para a turma
+
+Por que c2 passou a enxergar "Inglês" se a alteração foi feita através de c1?
+
+A resposta esperada é:
+
+Porque c1 e c2 apontam para a mesma instância de Configuracao.
+
+Isso ajuda bastante o aluno a perceber que Singleton não significa simplesmente "uma classe que tem apenas um objeto", mas sim que todos os clientes compartilham a mesma instância.
+
+Resumo visual
+                 Configuracao
+                      ▲
+                      │
+              getInstance()
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+         c1                      c2
+          │                       │
+          └───────────┬───────────┘
+                      │
+                      ▼
+              MESMO OBJETO
+
+E a ideia central do padrão pode ser apresentada aos alunos em uma frase:
+
+Singleton garante que uma classe possua uma única instância e fornece um ponto global de acesso a essa instância.
+
+///////////////////////////////////////
+
+Na primeira chamada:
+
+Configuracao c1 = Configuracao.getInstance();
+
+Como ainda não existe uma instância:
+
+instance == null
+
+então:
+
+instance = new Configuracao();
+
+A situação passa a ser:
+
+instance
+   │
+   ▼
+┌─────────────────┐
+│  Configuracao   │
+│                 │
+│ idioma=Port.    │
+│ tema=Claro      │
+└─────────────────┘
+
+Na segunda chamada:
+
+Configuracao c2 = Configuracao.getInstance();
+
+a condição:
+
+instance == null
+
+será falsa.
+
+Então uma nova configuração não será criada.
+
+O método simplesmente retorna a instância que já existe.
+
+
+
+
+
+Resultado:
+
+true
+
+Isso significa que:
+
+c1 ──────────┐
+             │
+             ▼
+      ┌───────────────┐
+      │ Configuracao  │
+      │               │
+      │ idioma        │
+      │ tema          │
+      └───────────────┘
+             ▲
+             │
+c2 ──────────┘
+
+c1 e c2 não são dois objetos iguais.
+
+Eles são duas referências para o mesmo objeto.
+
+
+
+
+Pergunta para discussão
+
+Depois do exercício, apresente:
+
+"Por que não simplesmente fazer new Configuracao() toda vez que precisarmos da configuração?"
+
+Possíveis respostas dos alunos:
+
+Cada new cria um objeto diferente.
+Poderíamos ter configurações diferentes no sistema.
+Uma parte do sistema poderia alterar sua configuração sem alterar outra.
+Não existiria uma configuração global única.
+
+Então você pode introduzir formalmente:
+
+Singleton é um padrão criacional que garante que uma classe possua apenas uma instância e fornece um ponto de acesso global a essa instância.
